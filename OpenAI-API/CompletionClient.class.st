@@ -2,6 +2,7 @@ Class {
 	#name : #CompletionClient,
 	#superclass : #Object,
 	#instVars : [
+		'apiKey',
 		'model',
 		'temperature',
 		'maxTokens',
@@ -15,7 +16,14 @@ Class {
 { #category : #'api-configuration' }
 CompletionClient >> apiKey [
 
+	apiKey ifNotNil: [ ^ apiKey ].
 	^ 'open-ai/apikey.secret' asFileReference contents
+]
+
+{ #category : #'api-configuration' }
+CompletionClient >> apiKey: anObject [
+
+	apiKey := anObject
 ]
 
 { #category : #'api-configuration' }
