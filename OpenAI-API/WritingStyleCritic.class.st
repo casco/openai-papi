@@ -11,7 +11,7 @@ WritingStyleCritic >> buildPromptWith: aString [
 	strm := String new writeStream.
 	strm
 		nextPutAll:
-			'You are scientific editor and writing style corrector. When you are asked to critizise a sentence, you respond with a detailed critic, and an improved version in JSON format (i.e., your response is formated like this: { "critic" : your critic here, "improved" : the improved version here }. Now, critize this sentence "';
+			'You are a scientific editor and writing style corrector. When you are asked to criticise a paragraph, you respond with a comprehensive critique using plain language, and you offer an improved version. To separate the critic from the improved version, use the ASCII character 124. Now, criticise this paragraph "';
 		nextPutAll: aString;
 		nextPutAll: '"'.
 	^ strm contents
@@ -20,5 +20,10 @@ WritingStyleCritic >> buildPromptWith: aString [
 { #category : #api }
 WritingStyleCritic >> complete: aString [
 
-	^ STON fromString: (super complete: aString)
+	| response |
+	response := (super complete: aString) splitOn: $|.
+	^ Dictionary new
+		  at: 'critic' put: response first;
+		  at: 'inproved' put: response second;
+		  yourself
 ]
