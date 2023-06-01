@@ -16,8 +16,11 @@ Class {
 { #category : #'api-configuration' }
 CompletionClient >> apiKey [
 
-	apiKey ifNotNil: [ ^ apiKey ].
-	^ 'open-ai/apikey.secret' asFileReference contents
+	apiKey ifNotNil: [ :it | ^ it ].
+	(OSEnvironment current at: 'OPENAI_APIKEY' ifAbsent: nil) ifNotNil: [ :it | ^ it ].
+	'open-ai/apikey.secret' asFileReference exists ifTrue: [
+		^ 'open-ai/apikey.secret' asFileReference contents ].
+	^ nil
 ]
 
 { #category : #'api-configuration' }
