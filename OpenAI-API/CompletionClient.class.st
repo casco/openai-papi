@@ -58,7 +58,7 @@ CompletionClient >> complete: aString [
 			             headerAt: 'Authorization'
 			             put:
 				             'Bearer '
-				             , 'open-ai/apikey.secret' asFileReference contents;
+				             , self apiKey;
 			             entity:
 				             (ZnEntity text: (STON toJsonString: requestConfig));
 			             contentType: ZnMimeType applicationJson;
