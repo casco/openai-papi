@@ -38,6 +38,19 @@ ChatClient >> entdpointUrl [
 	^ 'https://api.openai.com/v1/chat/completions'
 ]
 
+{ #category : #chat }
+ChatClient >> fullConversation [
+
+	| fullConversation |
+	fullConversation := conversation copy.
+	systemMessage ifNotEmpty: [
+		fullConversation addFirst: (Dictionary new
+				 at: 'role' put: 'system';
+				 at: 'content' put: systemMessage;
+				 yourself) ].
+	^ fullConversation
+]
+
 { #category : #'initialize-release' }
 ChatClient >> initialize [ 	
 	super initialize .
@@ -52,7 +65,8 @@ ChatClient >> obtainNextAssistantMessage [
 
 	| response requestConfig |
 	requestConfig := self baseConfig.
-	requestConfig at: 'messages' put: conversation asArray.
+
+	requestConfig at: 'messages' put: self fullConversation asArray.
 	response := STON fromString: (ZnClient new
 			             url: self entdpointUrl;
 			             headerAt: 'Authorization'
@@ -61,7 +75,6 @@ ChatClient >> obtainNextAssistantMessage [
 				             (ZnEntity text: (STON toJsonString: requestConfig));
 			             contentType: ZnMimeType applicationJson;
 			             post).
-
 	conversation add: ((response at: 'choices') first at: 'message')
 ]
 
