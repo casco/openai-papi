@@ -18,14 +18,6 @@ ChatClient >> acceptMessageFromUser: aString [
 	self obtainNextAssistantMessage. 
 ]
 
-{ #category : #'initialize-release' }
-ChatClient >> baseConfig [
-
-	^ Dictionary new
-		  at: 'model' put: model;
-		  yourself
-]
-
 { #category : #accessing }
 ChatClient >> conversation [
 

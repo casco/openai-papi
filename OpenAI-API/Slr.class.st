@@ -29,6 +29,30 @@ Class {
 	#category : #'OpenAI-API'
 }
 
+{ #category : #examples }
+Slr class >> marolios [
+
+	| slr |
+	slr := Slr new.
+	slr title:
+		'Adaptive gamification in Collaborative systems, a systematic mapping study'.
+	slr researchQuestions:
+		'RQ1: What are the approaches of personalization in gamified collaborative systems?
+RQ2: What are the approaches of adaptation in gamified collaborative systems?
+RQ3: What gamification elements have been used in the adaptation in gamified collaborative systems?
+RQ4: Which research methods have been used in the evaluation of adaptation in gamified collaborative systems?
+RQ5: Which user models have been used in adaptation of gamified collaborative systems?'.
+	slr inclusionCriteria: 'Papers that fulfill the search string.
+Academic journal, conference, and workshop papers.
+Discipline: Computer Science.
+Abstract and keywords are available.
+Publicated between 2009 and 2019.'.
+	slr exclusionCriteria:
+		'Papers written in other language different than English.
+Papers out of scope (not collaborative projects). Editorial notes. Full books. Complete conference proceedings.'.
+	^ slr
+]
+
 { #category : #accessing }
 Slr >> exclusionCriteria [
 

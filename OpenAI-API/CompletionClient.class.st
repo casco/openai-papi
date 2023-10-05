@@ -32,14 +32,3 @@ CompletionClient >> entdpointUrl [
 
 	^ 'https://api.openai.com/v1/completions'
 ]
-
-{ #category : #'initialize-release' }
-CompletionClient >> initialize [
-
-	model := 'text-davinci-003'.
-	temperature := 0.9.
-	maxTokens := 1000.
-	topP := 1.
-	frequencyPenalty := 0.0.
-	presencePenalty := 0.6
-]
