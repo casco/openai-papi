@@ -5,7 +5,7 @@ Class {
 		'conversation',
 		'systemMessage'
 	],
-	#category : #'OpenAI-API'
+	#category : #'OpenAI-API-Chat'
 }
 
 { #category : #chat }

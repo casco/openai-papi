@@ -1,7 +1,7 @@
 Class {
 	#name : #FreeStyleScrapper,
 	#superclass : #CompletionClient,
-	#category : #'OpenAI-API'
+	#category : #'OpenAI-API-Completion'
 }
 
 { #category : #api }

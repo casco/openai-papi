@@ -17,7 +17,7 @@ Class {
 	#instVars : [
 		'trainingExamples'
 	],
-	#category : #'OpenAI-API'
+	#category : #'OpenAI-API-Completion'
 }
 
 { #category : #api }

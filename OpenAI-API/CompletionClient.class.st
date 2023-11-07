@@ -1,7 +1,7 @@
 Class {
 	#name : #CompletionClient,
 	#superclass : #GPTClient,
-	#category : #'OpenAI-API'
+	#category : #'OpenAI-API-Completion'
 }
 
 { #category : #api }

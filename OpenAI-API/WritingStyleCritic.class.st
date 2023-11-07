@@ -6,7 +6,7 @@ WritingStyleCritic  new complete: 'The web browser has evolved beyond being a me
 Class {
 	#name : #WritingStyleCritic,
 	#superclass : #CompletionClient,
-	#category : #'OpenAI-API'
+	#category : #'OpenAI-API-Completion'
 }
 
 { #category : #api }

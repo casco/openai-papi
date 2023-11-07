@@ -10,7 +10,7 @@ Class {
 		'frequencyPenalty',
 		'presencePenalty'
 	],
-	#category : #'OpenAI-API'
+	#category : #'OpenAI-API-Core'
 }
 
 { #category : #'api-configuration' }
