@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'tempFileReference'
 	],
-	#category : #'OpenAI-API-SountAndText'
+	#category : #'OpenAI-Speech'
 }
 
 { #category : #testing }

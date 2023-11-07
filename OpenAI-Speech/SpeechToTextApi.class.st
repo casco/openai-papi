@@ -1,8 +1,17 @@
 Class {
 	#name : #SpeechToTextApi,
-	#superclass : #GPTClient,
-	#category : #'OpenAI-API-SountAndText'
+	#superclass : #Object,
+	#category : #'OpenAI-Speech'
 }
+
+{ #category : #private }
+SpeechToTextApi >> apiKey [
+
+	(OSEnvironment current at: 'OPENAI_APIKEY' ifAbsent: nil) ifNotNil: [ :it | ^ it ].
+	'open-ai/apikey.secret' asFileReference exists ifTrue: [
+		^ 'open-ai/apikey.secret' asFileReference contents ].
+	^ nil
+]
 
 { #category : #private }
 SpeechToTextApi >> entdpointUrl [

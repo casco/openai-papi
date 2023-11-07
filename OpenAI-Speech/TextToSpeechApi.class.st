@@ -10,8 +10,8 @@ responseStream := TextToSpeechApi new toSpeechStream: 'Hola Manola, te traje una
 "
 Class {
 	#name : #TextToSpeechApi,
-	#superclass : #GPTClient,
-	#category : #'OpenAI-API-SountAndText'
+	#superclass : #Object,
+	#category : #'OpenAI-Speech'
 }
 
 { #category : #voices }
@@ -48,6 +48,15 @@ TextToSpeechApi class >> onix [
 TextToSpeechApi class >> shimmer [
 
 	^ 'shimmer'
+]
+
+{ #category : #private }
+TextToSpeechApi >> apiKey [
+
+	(OSEnvironment current at: 'OPENAI_APIKEY' ifAbsent: nil) ifNotNil: [ :it | ^ it ].
+	'open-ai/apikey.secret' asFileReference exists ifTrue: [
+		^ 'open-ai/apikey.secret' asFileReference contents ].
+	^ nil
 ]
 
 { #category : #private }
