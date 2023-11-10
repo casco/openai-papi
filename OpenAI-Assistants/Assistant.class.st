@@ -1,5 +1,5 @@
 Class {
-	#name : #Companion,
+	#name : #Assistant,
 	#superclass : #Object,
 	#instVars : [
 		'name',
@@ -9,7 +9,7 @@ Class {
 }
 
 { #category : #'instance cation' }
-Companion class >> name: aName id: anId [
+Assistant class >> name: aName id: anId [
 
 	^ self new
 		  name: aName;
@@ -18,25 +18,25 @@ Companion class >> name: aName id: anId [
 ]
 
 { #category : #accessing }
-Companion >> id [
+Assistant >> id [
 
 	^ id
 ]
 
 { #category : #accessing }
-Companion >> id: anObject [
+Assistant >> id: anObject [
 
 	id := anObject
 ]
 
 { #category : #accessing }
-Companion >> name [
+Assistant >> name [
 
 	^ name
 ]
 
 { #category : #accessing }
-Companion >> name: anObject [
+Assistant >> name: anObject [
 
 	name := anObject
 ]
