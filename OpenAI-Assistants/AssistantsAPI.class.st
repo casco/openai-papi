@@ -2,22 +2,10 @@ Class {
 	#name : #AssistantsAPI,
 	#superclass : #Object,
 	#instVars : [
-		'users',
-		'assistants'
+		'participantsRegister'
 	],
 	#category : #'OpenAI-Assistants'
 }
-
-{ #category : #accessing }
-AssistantsAPI >> addAssistant: anAssistant [
-
-	assistants add: anAssistant
-]
-
-{ #category : #accessing }
-AssistantsAPI >> addUser: aUser [
-	users add: aUser
-]
 
 { #category : #private }
 AssistantsAPI >> apiKey [
@@ -27,12 +15,6 @@ AssistantsAPI >> apiKey [
 	'open-ai/apikey.secret' asFileReference exists ifTrue: [
 		^ 'open-ai/apikey.secret' asFileReference contents ].
 	^ nil
-]
-
-{ #category : #accessing }
-AssistantsAPI >> assistants [
-
-	^ assistants
 ]
 
 { #category : #private }
@@ -53,11 +35,10 @@ AssistantsAPI >> getObjectAt: url [
 		  ifFalse: [ nil ]
 ]
 
-{ #category : #initialization }
-AssistantsAPI >> initialize [ 
-	super initialize .
-	users := Set new.
-	assistants := Set new. 
+{ #category : #threads }
+AssistantsAPI >> initialize [ 	
+ super initialize.
+ participantsRegister := ParticipantsRegister new. 
 ]
 
 { #category : #threads }
@@ -66,12 +47,23 @@ AssistantsAPI >> newThread [
 	^ AssistantsThread from: (self post: nil at: self threadsUrl) for: self
 ]
 
-{ #category : #participants }
-AssistantsAPI >> participantWithId: aStringOrNil [
+{ #category : #threads }
+AssistantsAPI >> participantWithId: anId [
 
-	aStringOrNil ifNil: [ nil ].
+	participantsRegister ifNil: [ ^ nil ].
+	^ participantsRegister participantWithId: anId
+]
 
-	^ users , assistants detect: [ :each | each id = aStringOrNil ]
+{ #category : #accessing }
+AssistantsAPI >> participantsRegister [
+
+	^ participantsRegister
+]
+
+{ #category : #accessing }
+AssistantsAPI >> participantsRegister: anObject [
+
+	participantsRegister := anObject
 ]
 
 { #category : #private }
@@ -117,10 +109,4 @@ AssistantsAPI >> threads [
 AssistantsAPI >> threadsUrl [
 
 	^ 'https://api.openai.com/v1/threads'
-]
-
-{ #category : #accessing }
-AssistantsAPI >> users [
-
-	^ users
 ]
