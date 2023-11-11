@@ -17,6 +17,13 @@ AssistantsAPI >> apiKey [
 	^ nil
 ]
 
+{ #category : #threads }
+AssistantsAPI >> files [
+
+	^ AssistantsFile fromAll:
+		  (self getObjectAt: 'https://api.openai.com/v1/files')
+]
+
 { #category : #private }
 AssistantsAPI >> getObjectAt: url [
 
