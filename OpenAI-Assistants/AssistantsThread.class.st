@@ -44,7 +44,9 @@ AssistantsThread >> id: aString [
 { #category : #accessing }
 AssistantsThread >> messages [
 
-	^ messages
+	^ messages := AssistantsMessage
+		  fromAll: (api getObjectAt: self messagesUrl)
+		  in: api
 ]
 
 { #category : #accessing }
@@ -67,13 +69,5 @@ AssistantsThread >> post: aString by: aParticipant [
 
 	^ AssistantsMessage
 		  from: (api post: payload at: self messagesUrl)
-		  in: api
-]
-
-{ #category : #caching }
-AssistantsThread >> reloadMessages [
-
-	messages := AssistantsMessage
-		  fromAll: (api getObjectAt: self messagesUrl)
 		  in: api
 ]
