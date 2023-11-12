@@ -4,7 +4,9 @@ Class {
 	#instVars : [
 		'id',
 		'api',
-		'messages'
+		'messages',
+		'metadata',
+		'createdAt'
 	],
 	#category : #'OpenAI-Assistants'
 }
@@ -13,9 +15,18 @@ Class {
 AssistantsThread class >> from: aDictionary for: anAPI [
 
 	^ self new
+		  createdAt: (aDictionary at: 'created_at');
 		  id: (aDictionary at: 'id');
+		  metadata: (aDictionary at: 'metadata');
 		  api: anAPI;
 		  yourself
+]
+
+{ #category : #'instance creation' }
+AssistantsThread class >> fromAll: aDictionary for: anAPI [
+
+	^ (aDictionary at: 'data') collect: [ :each |
+		  self from: each for: anAPI ]
 ]
 
 { #category : #accessing }
@@ -28,6 +39,18 @@ AssistantsThread >> api [
 AssistantsThread >> api: anAPI [
 
 	api := anAPI
+]
+
+{ #category : #accessing }
+AssistantsThread >> createdAt [
+
+	^ createdAt
+]
+
+{ #category : #accessing }
+AssistantsThread >> createdAt: anObject [
+
+	createdAt := anObject
 ]
 
 { #category : #accessing }
@@ -44,15 +67,25 @@ AssistantsThread >> id: aString [
 { #category : #accessing }
 AssistantsThread >> messages [
 
-	^ messages := AssistantsMessage
-		  fromAll: (api getObjectAt: self messagesUrl)
-		  in: api
+	^ messages ifNil: Set new
 ]
 
 { #category : #accessing }
 AssistantsThread >> messagesUrl [
 
 	^ 'https://api.openai.com/v1/threads/' , id , '/messages'
+]
+
+{ #category : #accessing }
+AssistantsThread >> metadata [
+
+	^ metadata
+]
+
+{ #category : #accessing }
+AssistantsThread >> metadata: anObject [
+
+	metadata := anObject
 ]
 
 { #category : #posting }
@@ -70,4 +103,12 @@ AssistantsThread >> post: aString by: aParticipant [
 	^ AssistantsMessage
 		  from: (api post: payload at: self messagesUrl)
 		  in: api
+]
+
+{ #category : #accessing }
+AssistantsThread >> updateMessages [
+
+	^ messages := AssistantsMessage
+		              fromAll: (api getObjectAt: self messagesUrl)
+		              in: api
 ]

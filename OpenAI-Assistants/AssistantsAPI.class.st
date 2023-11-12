@@ -116,7 +116,9 @@ AssistantsAPI >> threadId: threadId [
 { #category : #threads }
 AssistantsAPI >> threads [
 
-	^ self getObjectAt: 'https://api.openai.com/v1/threads'
+	^ AssistantsThread
+		  fromAll: (self getObjectAt: 'https://api.openai.com/v1/threads')
+		  for: self
 ]
 
 { #category : #threads }
