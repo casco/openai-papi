@@ -22,7 +22,7 @@ ParticipantsRegister >> addUser: aUser [
 { #category : #accessing }
 ParticipantsRegister >> assistants [
 
-	^ assistants
+	^ assistants ifNil: [ assistants := Set new ]
 ]
 
 { #category : #participants }
@@ -30,11 +30,11 @@ ParticipantsRegister >> participantWithId: aStringOrNil [
 
 	aStringOrNil ifNil: [ nil ].
 
-	^ users , assistants detect: [ :each | each id = aStringOrNil ] ifNone: [ nil ]
+	^ self users , self assistants detect: [ :each | each id = aStringOrNil ] ifNone: [ nil ]
 ]
 
 { #category : #accessing }
 ParticipantsRegister >> users [
 
-	^ users
+	^ users ifNil: [ users := Set new ]
 ]
