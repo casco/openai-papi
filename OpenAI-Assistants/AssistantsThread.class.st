@@ -108,7 +108,7 @@ AssistantsThread >> post: aString by: aParticipant [
 { #category : #accessing }
 AssistantsThread >> updateMessages [
 
-	^ messages := AssistantsMessage
+	^ messages := (AssistantsMessage
 		              fromAll: (api getObjectAt: self messagesUrl)
-		              in: api
+		              in: api) reversed
 ]
