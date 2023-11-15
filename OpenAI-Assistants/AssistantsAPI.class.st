@@ -7,6 +7,12 @@ Class {
 	#category : #'OpenAI-Assistants'
 }
 
+{ #category : #models }
+AssistantsAPI class >> gpt35turbo1106 [
+
+	^ 'gpt-3.5-turbo-1106'
+]
+
 { #category : #private }
 AssistantsAPI >> apiKey [
 
@@ -22,6 +28,12 @@ AssistantsAPI >> assistants [
 
 	^ Assistant fromAll:
 		  (self getObjectAt: 'https://api.openai.com/v1/assistants')
+]
+
+{ #category : #assistants }
+AssistantsAPI >> assistantsUrl [
+
+	^ 'https://api.openai.com/v1/assistants'
 ]
 
 { #category : #threads }
@@ -53,6 +65,19 @@ AssistantsAPI >> getObjectAt: url [
 AssistantsAPI >> initialize [ 	
  super initialize.
  participantsRegister := ParticipantsRegister new. 
+]
+
+{ #category : #assistants }
+AssistantsAPI >> newAssistantNamed: name model: model instructions: instructions description: descripcion [
+
+	^ Assistant from: (self
+			   post: (Dictionary new
+					    at: 'name' put: name;
+					    at: 'model' put: model;
+					    at: 'instructions' put: instructions;
+					    at: 'description' put: descripcion;
+					    yourself)
+			   at: self assistantsUrl)
 ]
 
 { #category : #threads }
@@ -116,6 +141,7 @@ AssistantsAPI >> threadId: threadId [
 { #category : #threads }
 AssistantsAPI >> threads [
 
+	self error: [ 'This api call seems to have been deprecated' ].
 	^ AssistantsThread
 		  fromAll: (self getObjectAt: 'https://api.openai.com/v1/threads')
 		  for: self
