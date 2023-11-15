@@ -13,6 +13,12 @@ AssistantsAPI class >> gpt35turbo1106 [
 	^ 'gpt-3.5-turbo-1106'
 ]
 
+{ #category : #models }
+AssistantsAPI class >> models [
+
+	^ { self gpt35turbo1106 }
+]
+
 { #category : #private }
 AssistantsAPI >> apiKey [
 
