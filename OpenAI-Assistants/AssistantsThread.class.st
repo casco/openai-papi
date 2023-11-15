@@ -67,7 +67,7 @@ AssistantsThread >> id: aString [
 { #category : #accessing }
 AssistantsThread >> messages [
 
-	^ messages ifNil: Set new
+	^ messages ifNil: Array new
 ]
 
 { #category : #accessing }
