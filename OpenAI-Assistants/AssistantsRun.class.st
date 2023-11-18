@@ -15,7 +15,9 @@ Class {
 		'expiresAt',
 		'canceledAt',
 		'failedAt',
-		'completedAt'
+		'completedAt',
+		'usedFileIds',
+		'usedTools'
 	],
 	#category : #'OpenAI-Assistants'
 }
@@ -335,6 +337,32 @@ AssistantsRun >> updateWith: aDictionary [
 		expiresAt: (aDictionary at: 'expires_at' ifAbsent: [nil]);
 		canceledAt: (aDictionary at: 'canceled_at' ifAbsent: [nil]);
 		failedAt: (aDictionary at: 'failed_at' ifAbsent: [nil]);
-		completedAt: (aDictionary at: 'completed_at' ifAbsent: [nil]).
+		completedAt: (aDictionary at: 'completed_at' ifAbsent: [nil]);
+		usedFileIds:  (aDictionary at: 'file_ids' ifAbsent: [nil]);
+		usedTools: (aDictionary at: 'otols' ifAbsent: [nil]).
 
+]
+
+{ #category : #accessing }
+AssistantsRun >> usedFileIds [
+
+	^ usedFileIds
+]
+
+{ #category : #accessing }
+AssistantsRun >> usedFileIds: anObject [
+
+	usedFileIds := anObject
+]
+
+{ #category : #accessing }
+AssistantsRun >> usedTools [
+
+	^ usedTools
+]
+
+{ #category : #accessing }
+AssistantsRun >> usedTools: anObject [
+
+	usedTools := anObject
 ]

@@ -101,6 +101,12 @@ AssistantsThread >> metadata: anObject [
 	metadata := anObject
 ]
 
+{ #category : #accessing }
+AssistantsThread >> playgroundUrl [
+
+	^ 'https://platform.openai.com/playground?thread=' , id
+]
+
 { #category : #runs }
 AssistantsThread >> post: aString by: aParticipant [
 
