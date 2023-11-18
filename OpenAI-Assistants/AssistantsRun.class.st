@@ -112,6 +112,18 @@ AssistantsRun >> fileIds [
 	^ assistant fileIds
 ]
 
+{ #category : #testing }
+AssistantsRun >> hasExpired [
+
+	^ status = 'expired'
+]
+
+{ #category : #testing }
+AssistantsRun >> hasFailed [
+
+	^ status = 'failed'
+]
+
 { #category : #accessing }
 AssistantsRun >> id [
 
@@ -122,6 +134,30 @@ AssistantsRun >> id [
 AssistantsRun >> id: anObject [
 
 	id := anObject
+]
+
+{ #category : #testing }
+AssistantsRun >> ifCanceled: aOneArgumentBlock [
+
+	status = 'canceled' ifTrue: aOneArgumentBlock
+]
+
+{ #category : #testing }
+AssistantsRun >> ifCompleted: aOneArgumentBlock [
+
+	status = 'completed' ifTrue: aOneArgumentBlock 
+]
+
+{ #category : #testing }
+AssistantsRun >> ifExpired: aOneArgumentBlock [
+
+	status = 'expired' ifTrue: aOneArgumentBlock
+]
+
+{ #category : #testing }
+AssistantsRun >> ifFailed: aOneArgumentBlock [
+
+	status = 'failed' ifTrue: aOneArgumentBlock
 ]
 
 { #category : #initialization }
@@ -138,6 +174,36 @@ AssistantsRun >> instructions [
 	^ assistant instructions
 ]
 
+{ #category : #testing }
+AssistantsRun >> isCanceled [
+
+	^ status = 'canceled'
+]
+
+{ #category : #testing }
+AssistantsRun >> isCancelling [
+
+	^ status = 'cancelling'
+]
+
+{ #category : #testing }
+AssistantsRun >> isCompleted [
+
+	^ status = 'completed'
+]
+
+{ #category : #testing }
+AssistantsRun >> isInProgress [
+
+	^ status = 'in_progress'
+]
+
+{ #category : #testing }
+AssistantsRun >> isQueued [
+
+	^ status = 'queued'
+]
+
 { #category : #accessing }
 AssistantsRun >> lastError [
 
@@ -148,6 +214,13 @@ AssistantsRun >> lastError [
 AssistantsRun >> lastError: anObject [
 
 	lastError := anObject
+]
+
+{ #category : #messages }
+AssistantsRun >> messages [
+
+	thread updateMessages.
+	^ thread messages select: [ :each | each runId = id ]
 ]
 
 { #category : #accessing }
@@ -168,6 +241,21 @@ AssistantsRun >> model [
 	^ assistant model
 ]
 
+{ #category : #monitoring }
+AssistantsRun >> monitorEvery: seconds onCompletedDo: completedBlock onCanceledFailerOrExpiredDo: abnormalTerminationBlock [
+
+	| monitor |
+	monitor := AssistantsRunStatusMonitor new
+		           run: self;
+		           completedBlock: completedBlock;
+		           expiredBlock: abnormalTerminationBlock;
+		           failedBlock: abnormalTerminationBlock;
+		           canceledBlock: abnormalTerminationBlock;
+		           yourself.
+	monitor startMonitoringEvery: seconds.
+	^ monitor
+]
+
 { #category : #accessing }
 AssistantsRun >> requiredAction [
 
@@ -180,10 +268,10 @@ AssistantsRun >> requiredAction: anObject [
 	requiredAction := anObject
 ]
 
-{ #category : #running }
-AssistantsRun >> start [
+{ #category : #testing }
+AssistantsRun >> requiresAction [
 
-	
+	^ status = 'requires_action'
 ]
 
 { #category : #accessing }
@@ -205,9 +293,9 @@ AssistantsRun >> status [
 ]
 
 { #category : #accessing }
-AssistantsRun >> status: anObject [
-
-	status := anObject
+AssistantsRun >> status: theNewStatus [
+	status := theNewStatus.
+	
 ]
 
 { #category : #accessing }
