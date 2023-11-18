@@ -139,25 +139,25 @@ AssistantsRun >> id: anObject [
 { #category : #testing }
 AssistantsRun >> ifCanceled: aOneArgumentBlock [
 
-	status = 'canceled' ifTrue: aOneArgumentBlock
+	status = 'canceled' ifTrue: [aOneArgumentBlock value: self] 
 ]
 
 { #category : #testing }
 AssistantsRun >> ifCompleted: aOneArgumentBlock [
 
-	status = 'completed' ifTrue: aOneArgumentBlock 
+	status = 'completed' ifTrue: [aOneArgumentBlock value: self] 
 ]
 
 { #category : #testing }
 AssistantsRun >> ifExpired: aOneArgumentBlock [
 
-	status = 'expired' ifTrue: aOneArgumentBlock
+	status = 'expired' ifTrue: [aOneArgumentBlock value: self] 
 ]
 
 { #category : #testing }
 AssistantsRun >> ifFailed: aOneArgumentBlock [
 
-	status = 'failed' ifTrue: aOneArgumentBlock
+	status = 'failed' ifTrue: [aOneArgumentBlock value: self] 
 ]
 
 { #category : #initialization }

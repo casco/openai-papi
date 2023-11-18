@@ -129,6 +129,7 @@ AssistantsThread >> startRunFor: anAssistant [
 
 	runs ifNotNil: [ latestRun ifNotNil: [ :it | runs add: it ] ].
 	latestRun := api startRunIn: self for: anAssistant.
+	^latestRun 
 
 ]
 

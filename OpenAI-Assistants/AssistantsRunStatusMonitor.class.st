@@ -29,6 +29,7 @@ AssistantsRunStatusMonitor >> canceledBlock: anObject [
 AssistantsRunStatusMonitor >> checkForStatusChange [
 
 	| newStatus |
+	run update.
 	newStatus := run status.
 	lastObservedStatus ~= newStatus ifTrue: [ self runStatusChangedBlocks ]. 
 	self stopIfNeeded. 
