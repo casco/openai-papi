@@ -135,6 +135,29 @@ AssistantsAPI >> post: aPropertyValueDictionary at: url [
 		  ifFalse: [ nil ]
 ]
 
+{ #category : #runs }
+AssistantsAPI >> runUrlIn: aThread [
+
+	^ 'https://api.openai.com/v1/threads/' , aThread id , '/runs'
+]
+
+{ #category : #runs }
+AssistantsAPI >> startRunIn: aThread for: anAssistant [
+
+	| run runSpec |
+	run := AssistantsRun in: aThread for: anAssistant with: self.
+	runSpec := self
+		           post: (Dictionary new
+				            at: 'assistant_id' put: anAssistant id;
+				            at: 'model' put: anAssistant model;
+				            at: 'instructions' put: anAssistant instructions;
+				            at: 'tools' put: anAssistant tools;
+				            yourself)
+		           at: (self runUrlIn: aThread).
+	run updateWith: runSpec.
+	^ run
+]
+
 { #category : #threads }
 AssistantsAPI >> threadId: threadId [
 
@@ -157,4 +180,12 @@ AssistantsAPI >> threads [
 AssistantsAPI >> threadsUrl [
 
 	^ 'https://api.openai.com/v1/threads'
+]
+
+{ #category : #runs }
+AssistantsAPI >> updateRun: aRun [
+
+	| runSpec |
+	runSpec := self getObjectAt: (self runUrlIn: aRun thread) , '/' , aRun id.
+	aRun updateWith: runSpec
 ]
