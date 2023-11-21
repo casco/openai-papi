@@ -45,8 +45,10 @@ AssistantsAPI >> assistantsUrl [
 { #category : #threads }
 AssistantsAPI >> files [
 
-	^ AssistantsFile fromAll:
-		  (self getObjectAt: 'https://api.openai.com/v1/files')
+	| response |
+	response := self getObjectAt: 'https://api.openai.com/v1/files'.
+	response ifNil: [ ^ nil ].
+	^ AssistantsFile fromAll: response
 ]
 
 { #category : #private }
@@ -89,7 +91,10 @@ AssistantsAPI >> newAssistantNamed: name model: model instructions: instructions
 { #category : #threads }
 AssistantsAPI >> newThread [
 
-	^ AssistantsThread from: (self post: nil at: self threadsUrl) for: self
+	| response |
+	response := self post: nil at: self threadsUrl.
+	response ifNil: [ nil ].
+	^ AssistantsThread from: response for: self
 ]
 
 { #category : #threads }
