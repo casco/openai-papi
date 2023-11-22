@@ -145,7 +145,6 @@ AssistantsRunStatusMonitor >> stopIfNeeded [
 { #category : #monitoring }
 AssistantsRunStatusMonitor >> stopMonitoring [
 
-	monitoringProcess ifNotNil: [ :it | 
-		it terminate.
-		monitoringProcess := nil ]
+	monitoringProcess ifNotNil: [ :it | it terminate ].
+	monitoringProcess := nil
 ]
