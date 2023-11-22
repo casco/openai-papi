@@ -9,7 +9,8 @@ Class {
 		'api',
 		'createdAt',
 		'author',
-		'metadata'
+		'metadata',
+		'runId'
 	],
 	#category : #'OpenAI-Assistants'
 }
@@ -28,6 +29,7 @@ AssistantsMessage class >> from: aDictionary in: anAssistantsAPI [
 		  metadata: metadata;
 		  author: (anAssistantsAPI participantWithId: authorId);
 		  role: (aDictionary at: 'role');
+		  runId: (aDictionary at: 'run_id' ifAbsent: [nil]);
 		  api: anAssistantsAPI;
 		  threadId: (aDictionary at: 'thread_id');
 		  text: ((aDictionary at: 'content') first at: 'text' at: 'value');
@@ -111,6 +113,18 @@ AssistantsMessage >> role [
 AssistantsMessage >> role: anObject [
 
 	role := anObject
+]
+
+{ #category : #accessing }
+AssistantsMessage >> runId [
+
+	^ runId
+]
+
+{ #category : #accessing }
+AssistantsMessage >> runId: anObject [
+
+	runId := anObject
 ]
 
 { #category : #accessing }

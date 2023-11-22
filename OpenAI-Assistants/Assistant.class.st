@@ -44,6 +44,11 @@ Assistant class >> name: aName id: anId [
 		  yourself
 ]
 
+{ #category : #comparing }
+Assistant >> = anotheAssistant [
+	^id = anotheAssistant id
+]
+
 { #category : #converting }
 Assistant >> asDictionary [
 
@@ -80,6 +85,12 @@ Assistant >> fileIds [
 Assistant >> fileIds: anObject [
 
 	fileIds := anObject
+]
+
+{ #category : #comparing }
+Assistant >> hash [
+
+	^ id hash
 ]
 
 { #category : #accessing }

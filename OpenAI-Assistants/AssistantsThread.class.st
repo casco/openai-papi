@@ -6,7 +6,9 @@ Class {
 		'api',
 		'messages',
 		'metadata',
-		'createdAt'
+		'createdAt',
+		'runs',
+		'latestRun'
 	],
 	#category : #'OpenAI-Assistants'
 }
@@ -64,10 +66,21 @@ AssistantsThread >> id: aString [
 	id := aString
 ]
 
+{ #category : #runs }
+AssistantsThread >> latestRun [
+
+	^ latestRun
+]
+
+{ #category : #runs }
+AssistantsThread >> logAllRuns [
+	runs := OrderedCollection new. 
+]
+
 { #category : #accessing }
 AssistantsThread >> messages [
 
-	^ messages ifNil: Set new
+	^ messages ifNil: Array new
 ]
 
 { #category : #accessing }
@@ -88,7 +101,13 @@ AssistantsThread >> metadata: anObject [
 	metadata := anObject
 ]
 
-{ #category : #posting }
+{ #category : #accessing }
+AssistantsThread >> playgroundUrl [
+
+	^ 'https://platform.openai.com/playground?thread=' , id
+]
+
+{ #category : #runs }
 AssistantsThread >> post: aString by: aParticipant [
 
 	| payload |
@@ -103,6 +122,21 @@ AssistantsThread >> post: aString by: aParticipant [
 	^ AssistantsMessage
 		  from: (api post: payload at: self messagesUrl)
 		  in: api
+]
+
+{ #category : #runs }
+AssistantsThread >> runs [
+
+	^ runs
+]
+
+{ #category : #runs }
+AssistantsThread >> startRunFor: anAssistant [
+
+	runs ifNotNil: [ latestRun ifNotNil: [ :it | runs add: it ] ].
+	latestRun := api startRunIn: self for: anAssistant.
+	^latestRun 
+
 ]
 
 { #category : #accessing }

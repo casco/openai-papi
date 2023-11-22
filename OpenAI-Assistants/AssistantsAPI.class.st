@@ -13,6 +13,12 @@ AssistantsAPI class >> gpt35turbo1106 [
 	^ 'gpt-3.5-turbo-1106'
 ]
 
+{ #category : #models }
+AssistantsAPI class >> models [
+
+	^ { self gpt35turbo1106 }
+]
+
 { #category : #private }
 AssistantsAPI >> apiKey [
 
@@ -36,11 +42,13 @@ AssistantsAPI >> assistantsUrl [
 	^ 'https://api.openai.com/v1/assistants'
 ]
 
-{ #category : #threads }
+{ #category : #files }
 AssistantsAPI >> files [
 
-	^ AssistantsFile fromAll:
-		  (self getObjectAt: 'https://api.openai.com/v1/files')
+	| response |
+	response := self getObjectAt: 'https://api.openai.com/v1/files'.
+	response ifNil: [ ^ nil ].
+	^ AssistantsFile fromAll: response
 ]
 
 { #category : #private }
@@ -83,7 +91,10 @@ AssistantsAPI >> newAssistantNamed: name model: model instructions: instructions
 { #category : #threads }
 AssistantsAPI >> newThread [
 
-	^ AssistantsThread from: (self post: nil at: self threadsUrl) for: self
+	| response |
+	response := self post: nil at: self threadsUrl.
+	response ifNil: [ nil ].
+	^ AssistantsThread from: response for: self
 ]
 
 { #category : #threads }
@@ -138,6 +149,29 @@ AssistantsAPI >> postAssistant: anAssistant [
 		at: self assistantsUrl , '/' , anAssistant id
 ]
 
+{ #category : #runs }
+AssistantsAPI >> runUrlIn: aThread [
+
+	^ 'https://api.openai.com/v1/threads/' , aThread id , '/runs'
+]
+
+{ #category : #runs }
+AssistantsAPI >> startRunIn: aThread for: anAssistant [
+
+	| run runSpec |
+	run := AssistantsRun in: aThread for: anAssistant with: self.
+	runSpec := self
+		           post: (Dictionary new
+				            at: 'assistant_id' put: anAssistant id;
+				            at: 'model' put: anAssistant model;
+				            at: 'instructions' put: anAssistant instructions;
+				            at: 'tools' put: anAssistant tools;
+				            yourself)
+		           at: (self runUrlIn: aThread).
+	run updateWith: runSpec.
+	^ run
+]
+
 { #category : #threads }
 AssistantsAPI >> threadId: threadId [
 
@@ -167,4 +201,12 @@ AssistantsAPI >> updateAssistant: anAssistant [
 
 	anAssistant updateWith:
 		(self getObjectAt: self assistantsUrl , '/' , anAssistant id)
+]
+
+{ #category : #runs }
+AssistantsAPI >> updateRun: aRun [
+
+	| runSpec |
+	runSpec := self getObjectAt: (self runUrlIn: aRun thread) , '/' , aRun id.
+	aRun updateWith: runSpec
 ]
