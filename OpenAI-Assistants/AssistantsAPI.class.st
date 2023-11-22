@@ -42,7 +42,7 @@ AssistantsAPI >> assistantsUrl [
 	^ 'https://api.openai.com/v1/assistants'
 ]
 
-{ #category : #threads }
+{ #category : #files }
 AssistantsAPI >> files [
 
 	| response |
