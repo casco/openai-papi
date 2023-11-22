@@ -44,6 +44,20 @@ Assistant class >> name: aName id: anId [
 		  yourself
 ]
 
+{ #category : #converting }
+Assistant >> asDictionary [
+
+	^ Dictionary new
+		  at: 'name' put: name;
+		  at: 'model' put: model;
+		  at: 'instructions' put: instructions;
+		  at: 'description' put: description;
+		  at: 'tools' put: tools;
+		  at: 'file_ids' put: fileIds;
+		  at: 'metadata' put: metadata;
+		  yourself
+]
+
 { #category : #accessing }
 Assistant >> description [
 
@@ -138,4 +152,19 @@ Assistant >> tools [
 Assistant >> tools: anObject [
 
 	tools := anObject
+]
+
+{ #category : #converting }
+Assistant >> updateWith: aDictionary [
+
+	(aDictionary at: 'id') = id ifFalse: [
+		self error: 'This is not my data' ].
+
+	name := aDictionary at: 'name'.
+	model := aDictionary at: 'model'.
+	instructions := aDictionary at: 'instructions'.
+	description := aDictionary at: 'description'.
+	tools := aDictionary at: 'tools'.
+	fileIds := aDictionary at: 'file-ids'.
+	metadata := aDictionary at: 'metadata'
 ]

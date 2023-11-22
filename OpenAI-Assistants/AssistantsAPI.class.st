@@ -129,6 +129,15 @@ AssistantsAPI >> post: aPropertyValueDictionary at: url [
 		  ifFalse: [ nil ]
 ]
 
+{ #category : #assistants }
+AssistantsAPI >> postAssistant: anAssistant [
+
+	| response |
+	response := self
+		post: anAssistant asDictionary
+		at: self assistantsUrl , '/' , anAssistant id
+]
+
 { #category : #threads }
 AssistantsAPI >> threadId: threadId [
 
@@ -151,4 +160,11 @@ AssistantsAPI >> threads [
 AssistantsAPI >> threadsUrl [
 
 	^ 'https://api.openai.com/v1/threads'
+]
+
+{ #category : #assistants }
+AssistantsAPI >> updateAssistant: anAssistant [
+
+	anAssistant updateWith:
+		(self getObjectAt: self assistantsUrl , '/' , anAssistant id)
 ]
