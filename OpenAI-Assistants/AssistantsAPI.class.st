@@ -43,12 +43,33 @@ AssistantsAPI >> assistantsUrl [
 ]
 
 { #category : #files }
+AssistantsAPI >> deleteFile: anAssistantsFile [
+
+	| client |
+	client := ZnClient new.
+	client
+		url: self filesUrl , '/' , anAssistantsFile id;
+		headerAt: 'Authorization' put: 'Bearer ' , self apiKey;
+		headerAt: 'OpenAI-Beta' put: 'assistants=v1';
+		delete.
+
+	client response isSuccess ifFalse: [
+		self error: 'Error while deleting a file in openai' ]
+]
+
+{ #category : #files }
 AssistantsAPI >> files [
 
 	| response |
-	response := self getObjectAt: 'https://api.openai.com/v1/files'.
+	response := self getObjectAt: self filesUrl.
 	response ifNil: [ ^ nil ].
 	^ AssistantsFile fromAll: response
+]
+
+{ #category : #files }
+AssistantsAPI >> filesUrl [
+
+	^ 'https://api.openai.com/v1/files'
 ]
 
 { #category : #private }
@@ -209,4 +230,23 @@ AssistantsAPI >> updateRun: aRun [
 	| runSpec |
 	runSpec := self getObjectAt: (self runUrlIn: aRun thread) , '/' , aRun id.
 	aRun updateWith: runSpec
+]
+
+{ #category : #files }
+AssistantsAPI >> uploadFile: aFilenameString [
+
+	| client |
+	client := ZnClient new.
+	client
+		          url: self filesUrl;
+		          headerAt: 'Authorization' put: 'Bearer ' , self apiKey;
+		          headerAt: 'OpenAI-Beta' put: 'assistants=v1';
+		          addPart:
+			          (ZnMimePart fieldName: 'file' fileNamed: aFilenameString);
+		          addPart:
+			          (ZnMimePart fieldName: 'purpose' value: 'assistants');
+		          post.
+
+	client response isSuccess  ifFalse: [
+		self error: 'Error while uploading a file to openai' ]
 ]
