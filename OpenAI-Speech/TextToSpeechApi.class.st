@@ -9,48 +9,49 @@ responseStream := TextToSpeechApi new toSpeechStream: 'Hola Manola, te traje una
 
 "
 Class {
-	#name : #TextToSpeechApi,
-	#superclass : #Object,
-	#category : #'OpenAI-Speech'
+	#name : 'TextToSpeechApi',
+	#superclass : 'Object',
+	#category : 'OpenAI-Speech',
+	#package : 'OpenAI-Speech'
 }
 
-{ #category : #voices }
+{ #category : 'voices' }
 TextToSpeechApi class >> alloy [
 
 	^ 'alloy'
 ]
 
-{ #category : #voices }
+{ #category : 'voices' }
 TextToSpeechApi class >> echo [
 
 	^ 'echo'
 ]
 
-{ #category : #voices }
+{ #category : 'voices' }
 TextToSpeechApi class >> fable [
 
 	^ 'fable'
 ]
 
-{ #category : #voices }
+{ #category : 'voices' }
 TextToSpeechApi class >> nova [
 
 	^ 'nova'
 ]
 
-{ #category : #voices }
+{ #category : 'voices' }
 TextToSpeechApi class >> onix [
 
 	^ 'onix'
 ]
 
-{ #category : #voices }
+{ #category : 'voices' }
 TextToSpeechApi class >> shimmer [
 
 	^ 'shimmer'
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 TextToSpeechApi >> apiKey [
 
 	(OSEnvironment current at: 'OPENAI_APIKEY' ifAbsent: nil) ifNotNil: [ :it | ^ it ].
@@ -59,16 +60,21 @@ TextToSpeechApi >> apiKey [
 	^ nil
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 TextToSpeechApi >> entdpointUrl [
 
 	^ 'https://api.openai.com/v1/audio/speech'
 ]
 
-{ #category : #private }
-TextToSpeechApi >> toSpeechStream: aString voice: voice [
+{ #category : 'api' }
+TextToSpeechApi >> vocalize: aString withVoice: voice [
+
+	"Returns a readStream on binary data"
 
 	| response payload |
+	self apiKey ifNil: [
+		^ self error:
+			  'OpenAI API is not properly configured. Keck your API key' ].
 	payload := Dictionary new
 		           at: 'input' put: aString;
 		           at: 'model' put: 'tts-1';
@@ -84,4 +90,15 @@ TextToSpeechApi >> toSpeechStream: aString voice: voice [
 		            post.
 
 	^ response
+]
+
+{ #category : 'api' }
+TextToSpeechApi >> vocalize: aString withVoice: voice toAudioFile: aFileReference [
+
+	| contents |
+
+	contents := (self vocalize: aString withVoice: voice) contents.
+	aFileReference binaryWriteStream
+		nextPutAll: contents;
+		close
 ]
