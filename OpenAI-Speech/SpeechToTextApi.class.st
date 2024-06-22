@@ -1,11 +1,10 @@
 Class {
-	#name : 'SpeechToTextApi',
-	#superclass : 'Object',
-	#category : 'OpenAI-Speech',
-	#package : 'OpenAI-Speech'
+	#name : #SpeechToTextApi,
+	#superclass : #Object,
+	#category : #'OpenAI-Speech'
 }
 
-{ #category : 'private' }
+{ #category : #private }
 SpeechToTextApi >> apiKey [
 
 	(OSEnvironment current at: 'OPENAI_APIKEY' ifAbsent: nil) ifNotNil: [ :it | ^ it ].
@@ -14,19 +13,25 @@ SpeechToTextApi >> apiKey [
 	^ nil
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 SpeechToTextApi >> entdpointUrl [
 
 	^ 'https://api.openai.com/v1/audio/transcriptions'
 ]
 
-{ #category : 'api' }
+{ #category : #api }
+SpeechToTextApi >> isProperlyConfigured [
+
+	^ self apiKey notNil
+]
+
+{ #category : #api }
 SpeechToTextApi >> transcribeAudioFile: anAudioFieReference [
 
 	^ self transcribeByteArray: anAudioFieReference binaryReadStream contents
 ]
 
-{ #category : 'api' }
+{ #category : #api }
 SpeechToTextApi >> transcribeByteArray: aByteArray [
 
 	| response entity |

@@ -1,16 +1,15 @@
 Class {
-	#name : 'TextToSpeechToTextTest',
-	#superclass : 'TestCase',
+	#name : #TextToSpeechToTextTest,
+	#superclass : #TestCase,
 	#instVars : [
 		'tempFileReference',
 		'textToSpeechApi',
 		'speechToTextApi'
 	],
-	#category : 'OpenAI-Speech',
-	#package : 'OpenAI-Speech'
+	#category : 'OpenAI-Speech'
 }
 
-{ #category : 'testing' }
+{ #category : #testing }
 TextToSpeechToTextTest >> setUp [
 
    textToSpeechApi := TextToSpeechApi new.
@@ -18,13 +17,13 @@ TextToSpeechToTextTest >> setUp [
 	tempFileReference := 'testRoundTript-test-audio.mp3' asFileReference
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 TextToSpeechToTextTest >> tearDown [
 
 	tempFileReference ifExists: [ :it | tempFileReference delete ]
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 TextToSpeechToTextTest >> testRoundTrip [
 
 	| text responseStream transcribedText |
@@ -38,7 +37,7 @@ TextToSpeechToTextTest >> testRoundTrip [
 		equals: (transcribedText asLowercase select: #isLetter)
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 TextToSpeechToTextTest >> testRoundTripOverFile [
 
 	| text responseStream transcribedText |
