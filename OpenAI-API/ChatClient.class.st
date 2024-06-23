@@ -15,7 +15,7 @@ ChatClient >> acceptMessageFromUser: aString [
 			 at: 'role' put: 'user';
 			 at: 'content' put: aString;
 			 yourself).
-	self obtainNextAssistantMessage. 
+
 ]
 
 { #category : #accessing }
