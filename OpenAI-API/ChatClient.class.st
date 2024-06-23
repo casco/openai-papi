@@ -18,6 +18,24 @@ ChatClient >> acceptMessageFromUser: aString [
 
 ]
 
+{ #category : #chat }
+ChatClient >> askAssistantToContribute [
+
+	| response requestConfig |
+	requestConfig := self baseConfig.
+
+	requestConfig at: 'messages' put: self fullConversation asArray.
+	response := STON fromString: (ZnClient new
+			             url: self entdpointUrl;
+			             headerAt: 'Authorization'
+			             put: 'Bearer ' , self apiKey;
+			             entity:
+				             (ZnEntity text: (STON toJsonString: requestConfig));
+			             contentType: ZnMimeType applicationJson;
+			             post).
+	conversation add: ((response at: 'choices') first at: 'message')
+]
+
 { #category : #accessing }
 ChatClient >> conversation [
 
@@ -52,22 +70,10 @@ ChatClient >> initialize [
 	
 ]
 
-{ #category : #chat }
-ChatClient >> obtainNextAssistantMessage [
+{ #category : #accessing }
+ChatClient >> lastMessage [ 
 
-	| response requestConfig |
-	requestConfig := self baseConfig.
-
-	requestConfig at: 'messages' put: self fullConversation asArray.
-	response := STON fromString: (ZnClient new
-			             url: self entdpointUrl;
-			             headerAt: 'Authorization'
-			             put: 'Bearer ' , self apiKey;
-			             entity:
-				             (ZnEntity text: (STON toJsonString: requestConfig));
-			             contentType: ZnMimeType applicationJson;
-			             post).
-	conversation add: ((response at: 'choices') first at: 'message')
+	^ conversation last
 ]
 
 { #category : #accessing }

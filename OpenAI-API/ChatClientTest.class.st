@@ -15,9 +15,9 @@ ChatClientTest >> setUp [
 ]
 
 { #category : #tests }
-ChatClientTest >> testObtainNextAssistantMessage [
+ChatClientTest >> testAskAssistantToContribute [
 
-	self should: [ client obtainNextAssistantMessage ] raise: KeyNotFound.
+	self should: [ client askAssistantToContribute ] raise: KeyNotFound.
 	client acceptMessageFromUser: 'Hola'.
 	self assert: client conversation size = 1.
 	self
@@ -27,7 +27,7 @@ ChatClientTest >> testObtainNextAssistantMessage [
 	self
 		assert: ((client conversation flatCollect: #value) asBag occurrencesOf: 'user')
 		equals: 1.
-	client obtainNextAssistantMessage.
+	client askAssistantToContribute.
 	self assert: client conversation size = 2.
 	self
 		assert:
@@ -36,4 +36,16 @@ ChatClientTest >> testObtainNextAssistantMessage [
 	self
 		assert: ((client conversation flatCollect: #value) asBag occurrencesOf: 'user')
 		equals: 1
+]
+
+{ #category : #tests }
+ChatClientTest >> testLastMessage [
+
+	self should: [ client lastMessage ] raise: SubscriptOutOfBounds .
+	client acceptMessageFromUser: 'What is the result of 1 + 1 (answer only the number)?'.
+	self assert: (client lastMessage at: 'role') equals: 'user'.
+	client askAssistantToContribute.
+	self assert: (client lastMessage at: 'role') equals: 'assistant'.	
+	self assert: (client lastMessage at: 'content') equals: '2'.	
+
 ]
